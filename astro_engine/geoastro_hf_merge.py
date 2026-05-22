@@ -29,7 +29,6 @@ from __future__ import annotations
 import argparse, csv, io, os, sys
 from dataclasses import dataclass
 from typing import Optional, List, Dict, Tuple
-from tkinter import Tk, Label, Button, Entry, StringVar, filedialog, messagebox, Text, END, DISABLED, NORMAL
 
 # ---------- Langues ----------
 @dataclass
@@ -434,6 +433,25 @@ def _cli():
     print(f"OK : CSV H/F généré → {args.out}")
 
 # ---------- Mini-UI ----------
+try:
+    from tkinter import (
+        Tk,
+        Label,
+        Button,
+        Entry,
+        StringVar,
+        filedialog,
+        messagebox,
+        Text,
+        END,
+        DISABLED,
+        NORMAL,
+    )
+except Exception:
+    Tk = Label = Button = Entry = StringVar = filedialog = messagebox = Text = None
+    END = DISABLED = NORMAL = None
+
+# ---------- Mini-UI ----------
 class HFMergeUI:
     def __init__(self):
         self.root = Tk()
@@ -508,6 +526,8 @@ class HFMergeUI:
         messagebox.showinfo("Terminé", f"CSV H/F généré :\n{outp}")
 
 def ui():
+    if Tk is None:
+        raise RuntimeError("Interface Tkinter indisponible dans cet environnement.")
     HFMergeUI().root.mainloop()
 
 # ---------- main ----------
