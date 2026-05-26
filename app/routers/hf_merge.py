@@ -1,5 +1,6 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Form
 from fastapi.responses import StreamingResponse, JSONResponse
+from app.security import get_request_mode, ensure_full_mode
 from urllib.parse import quote
 import tempfile
 import os
@@ -14,7 +15,12 @@ router = APIRouter()
 async def hf_merge(
     male_file: UploadFile = File(...),
     female_file: UploadFile = File(...),
+    mode: str = Form("trial"),
 ):
+    current_mode = get_request_mode(mode)
+
+    ensure_full_mode(current_mode)
+
     male_path = None
     female_path = None
     output_path = None
