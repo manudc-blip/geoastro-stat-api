@@ -22,10 +22,6 @@ def list_cohorts(
 
     files = sorted([f.name for f in folder.glob("*.csv")])
 
-    if current_mode == "trial":
-        allowed = "Médaillés Fields.csv" if lang == "fr" else "Fields medalists.csv"
-        files = [f for f in files if f == allowed]
-
     return {"files": files}
 
 @router.get("/cohorts/download")
